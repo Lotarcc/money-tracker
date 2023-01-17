@@ -1,0 +1,26 @@
+version: "3"
+services:
+  # database service definition with mongodb image
+  db:
+    image: mongo
+    container_name: "mongodb"
+    environment:
+      - MONGO_INITDB_DATABASE=moneyTracker
+      - MONGO_INITDB_ROOT_USERNAME=lotur
+      - MONGO_INITDB_ROOT_PASSWORD=Velfrb123
+    ports:
+      - "27017-27019:27017-27019"
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - mongo-volume:/data/db
+
+# volume definition for mongodb with size limit of 10GB
+volumes:
+  mongo-volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/lotarc/mongodb
+      o: bind
+    labels:
+      com.docker.compose.volume.size: 10G
